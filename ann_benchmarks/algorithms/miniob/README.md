@@ -1,7 +1,9 @@
-# 在 MiniOB 上运行 ann-benchmark
+# 在 MiniOB 上运行 ann-benchmarks
 
-1. 安装所需 python 依赖
+0. 下载ann-benchmarks 源码安装所需 python 依赖
 ```
+git clone https://github.com/nautaa/ann-benchmarks.git -b miniob_ann
+cd ann-benchmarks
 pip install -r requirements.txt
 ```
 1. 以 mysql 通讯协议且监听 unix socket 的方式启动 miniob.
