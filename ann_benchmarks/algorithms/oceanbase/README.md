@@ -14,6 +14,46 @@ bash build.sh release -DOB_USE_CCACHE=ON --init --make
 ./tools/deploy/obd.sh prepare -p /tmp/obtest
 # 配置文件请参考下面 obcluster.yaml 示例
 ./tools/deploy/obd.sh deploy -c obcluster.yaml
+
+# 创建用于测试的租户
+create resource unit unit_1 max_cpu 6, memory_size "10G", log_disk_size "10G";
+create resource pool pool_2 unit = 'unit_1', unit_num = 1, zone_list = ('zone1');
+create tenant perf replica_num = 1,primary_zone='zone1', resource_pool_list=('pool_2') set ob_tcp_invited_nodes='%';
+
+```
+
+obcluster.yaml:
+
+```yaml
+oceanbase-ce:
+  servers:
+    - name: server1
+      ip: 127.0.0.1
+  server1:
+    mysql_port: 2881
+    rpc_port: 2882
+    home_path: /data/obcluster
+    zone: zone1
+    # The directory for data storage. The default value is home_path/store.
+    # data_dir: /data
+    # The directory for clog, ilog, and slog. The default value is the same as the data_dir value.
+    # redo_dir: /redo
+  tag: latest
+  global:
+    # for default system config used by farm, please see tools/deploy/obd/observer.include.yaml
+    # You can also specify the configuration directly below (stored locally, switching the working directory and redeploying will still take effect)
+    devname: lo
+    root_password:
+    cpu_count: '24'
+    memory_limit: 14G
+    system_memory: 1G
+    datafile_size: 60G
+    log_disk_size: 40G
+    cluster_id: 1730447006
+    enable_syslog_recycle: true
+    enable_syslog_wf: false
+    max_syslog_file_count: 4
+    production_mode: false
 ```
 2. 运行 ann-benchmark.
 ```bash
