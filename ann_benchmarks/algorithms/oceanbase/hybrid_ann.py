@@ -6,8 +6,16 @@ def execute_and_fetch(cursor, query):
     return cursor.fetchall()
 
 def calculate_recall(correct_result, result):
-    unmatched_count = sum(1 for item in result if item not in correct_result)
-    recall = 1 - unmatched_count / len(result)
+    if not correct_result:
+        return 0.0
+
+    correct_set = set(correct_result)
+    result_set = set(result)
+    
+    true_positives = len(correct_set & result_set)
+    
+    recall = true_positives / len(correct_set)
+    
     return recall
 
 def test_sql(cursor, ivf_sql, sql):
@@ -75,5 +83,17 @@ def start_ann2():
         if connection:
             connection.close()
 
+
+def __test_recall_calc():
+  correct_result = [1, 2, 3, 4, 5]
+  result1 = [1]
+  recall = calculate_recall(correct_result, result1)
+  assert recall == 0.2, "recall test failed"
+
+  result2 = [1, 1, 1, 1, 1]
+  recall = calculate_recall(correct_result, result2)
+  assert recall == 0.2, "recall test failed"
+
 if __name__ == "__main__":
     start_ann2()
+    # __test_recall_calc()
