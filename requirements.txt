@@ -5,9 +5,9 @@ matplotlib==3.6.3
 numpy==1.26.4
 pyyaml==6.0.2
 psutil==5.9.4
-scikit-learn==1.2.1
-jinja2==3.1.2
-pytest==7.2.2
-datasets==2.12.0
+scikit-learn==1.6.1
+jinja2==3.1.6
+pytest==8.3.5
+datasets==3.4.0
+requests==2.32.3
 pymysql
-requests==2.31.0
